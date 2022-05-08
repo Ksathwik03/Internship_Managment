@@ -6,6 +6,7 @@ const StudentSchema = new mongoose.Schema(
     id: {
       type: String,
     },
+    
     email: {
       type: String,
       unique: true,
@@ -13,7 +14,7 @@ const StudentSchema = new mongoose.Schema(
 
     enrollmentNumber: {
       type: String,
-      unique: true
+      // unique: true
     },
 
     branch: {
@@ -21,11 +22,15 @@ const StudentSchema = new mongoose.Schema(
     },
 
     resume: {
-      type: Buffer
+      type: String
     },
 
     CGPA: {
-      type: Float32Array
+      type: Number,
+    },
+
+    phoneNo: {
+      type: String
     },
 
     token: { type: String },

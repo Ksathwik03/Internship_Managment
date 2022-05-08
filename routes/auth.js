@@ -2,7 +2,8 @@ var express = require('express');
 var router = express.Router();
 var passport = require('passport');
 const cors = require('cors')
-const { isLoggedIn } = require('../middleWare/auth')
+const { isLoggedIn } = require('../middleWare/auth');
+const { registerFaculty, registerStudent } = require('../controllers/auth');
 router.use(cors())
 
 router.get('/failed', (req, res) => res.send('You Failed to log in!'))
@@ -29,5 +30,12 @@ router.get('/logout', (req, res) => {
   req.logout();
   res.redirect('/');
 })
+
+router.post('/register/student' , isLoggedIn, registerStudent)
+router.post('/register/faculty', isLoggedIn , registerFaculty)
+
+
+router.get('/register/student' , isLoggedIn, registerStudent)
+router.get('/register/faculty', isLoggedIn , registerFaculty)
 
 module.exports = router;

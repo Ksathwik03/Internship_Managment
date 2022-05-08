@@ -10,7 +10,7 @@ const FacultySchema = new mongoose.Schema({
     unique: true,
   },
   areaOfInterest: {
-    type: Array,
+    type: String,
   },
 
   qualifications: {

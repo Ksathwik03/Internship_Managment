@@ -6,6 +6,7 @@ const Faculty = require('../models/faculty')
 
 
 passport.serializeUser(function (user, done) {
+  console.log(user)
   done(null, user);
 });
 
@@ -20,7 +21,11 @@ passport.use('google-stu', new GoogleStrategy({
 },
   async function (accessToken, refreshToken, profile, done) {
     try {
-      // console.log(profile)
+
+      let myArray = profile._json.email.split("@")
+      let enrollmentNumber = myArray[0]
+      let branch = myArray[0].substring(1,3)
+
       let student = await Student.
         findOne({ 'email': profile._json.email })
         .catch((err) => { console.log(err) })
@@ -28,17 +33,17 @@ passport.use('google-stu', new GoogleStrategy({
       if (!student) {
         student = new Student({
           'email': profile._json.email,
-          'id': profile._json.id
+          'id': profile._json.id,
+          'enrollmentNumber': enrollmentNumber,
+          'branch': branch
         })
         await student.save()
 
       }
       return done(null, student)
 
-
     } catch (err) {
-      console.log(err)
-      return done(null, err)
+      return done(err, null)
     }
 
   }
@@ -51,7 +56,13 @@ passport.use('google-fac', new GoogleStrategy({
 },
   async function (accessToken, refreshToken, profile, done) {
     try {
-      // console.log(profile)
+
+      let myArray = profile._json.email.split("@")
+
+      if(myArray[1] != 'iiita.ac.in'){
+        return done("Only iiita Allowed", null)
+      }
+
       let faculty = await Faculty.
         findOne({ 'email': profile._json.email })
         .catch((err) => { console.log(err) })
@@ -59,16 +70,15 @@ passport.use('google-fac', new GoogleStrategy({
       if (!faculty) {
         faculty = new Faculty({
           'email': profile._json.email,
-          'id': profile._json.id
+          'id': profile._json.id,
         })
         await faculty.save()
-
       }
+
       return done(null, faculty)
 
 
     } catch (err) {
-      console.log(err)
       return done(null, err)
     }
   }
