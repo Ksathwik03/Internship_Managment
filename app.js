@@ -33,5 +33,6 @@ mongoose
         
 app.get('/', (req, res) => res.send('Example Home page!'))
 app.use('/',require("./routes/auth"));
+app.use('/intern',require("./routes/application"));
 
 app.listen(process.env.PORT || 3001, () => console.log(`Example app listening on port ${3001}!`))
