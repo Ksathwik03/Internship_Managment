@@ -9,6 +9,16 @@ const FacultySchema = new mongoose.Schema({
     type: String,
     unique: true,
   },
+  areaOfInterest: {
+    type: Array,
+  },
+
+  qualifications: {
+    type: Array
+  },
+  website: {
+    type: String
+  },
 
   token: { type: String },
 

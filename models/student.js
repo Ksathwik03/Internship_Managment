@@ -11,12 +11,30 @@ const StudentSchema = new mongoose.Schema(
       unique: true,
     },
 
+    enrollmentNumber: {
+      type: String,
+      unique: true
+    },
+
+    branch: {
+      type: String
+    },
+
+    resume: {
+      type: Buffer
+    },
+
+    CGPA: {
+      type: Float32Array
+    },
+
     token: { type: String },
 
     isStudent: {
       default: true,
       type: Boolean,
     },
+
   },
   { timestamps: true }
 );
