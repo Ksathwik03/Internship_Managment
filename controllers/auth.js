@@ -67,3 +67,20 @@ exports.registerFaculty = async(req,res) => {
     }
 
 }
+
+exports.getProfile = async(req,res) => {
+    
+    try{
+        return res.status(200).json({
+            success: true,
+            user: req.user
+        })
+    }
+    catch(err){
+        return res.status(500).json({
+            success: false,
+            error: `Error occured user ${err}`
+        })
+    }
+
+}

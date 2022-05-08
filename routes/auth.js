@@ -3,7 +3,7 @@ var router = express.Router();
 var passport = require('passport');
 const cors = require('cors')
 const { isLoggedIn } = require('../middleWare/auth');
-const { registerFaculty, registerStudent } = require('../controllers/auth');
+const { registerFaculty, registerStudent, getProfile } = require('../controllers/auth');
 router.use(cors())
 
 router.get('/failed', (req, res) => res.send('You Failed to log in!'))
@@ -38,4 +38,5 @@ router.post('/register/faculty', isLoggedIn , registerFaculty)
 router.get('/register/student' , isLoggedIn, registerStudent)
 router.get('/register/faculty', isLoggedIn , registerFaculty)
 
+router.get('/profile' , isLoggedIn , getProfile)
 module.exports = router;
