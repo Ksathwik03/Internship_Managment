@@ -6,7 +6,6 @@ const Faculty = require('../models/faculty')
 
 
 passport.serializeUser(function (user, done) {
-  console.log(user)
   done(null, user);
 });
 
@@ -35,7 +34,8 @@ passport.use('google-stu', new GoogleStrategy({
           'email': profile._json.email,
           'id': profile._json.id,
           'enrollmentNumber': enrollmentNumber,
-          'branch': branch
+          'branch': branch,
+          'name': profile._json.name
         })
         await student.save()
 
@@ -71,6 +71,7 @@ passport.use('google-fac', new GoogleStrategy({
         faculty = new Faculty({
           'email': profile._json.email,
           'id': profile._json.id,
+          'name': profile._json.name
         })
         await faculty.save()
       }

@@ -1,5 +1,6 @@
 const { default: mongoose } = require("mongoose")
 const Application = require("../models/Application")
+const Faculty = require("../models/faculty")
 const Internship = require("../models/internship")
 const Student = require("../models/student")
 
@@ -129,7 +130,7 @@ exports.detailedApplication = async(req,res) => {
 exports.facultyInterships = async(req,res) => {
   
     try{    
-        const facultyId = req.params.facultyID
+        const facultyId = req.user.id
         const application = await Application.find({'id': facultyId})
         
         return res.status(200).json({
@@ -138,6 +139,61 @@ exports.facultyInterships = async(req,res) => {
         });
     }
 
+    catch(err){
+        return res.status(500).json({
+            success: false,
+            error: `Error occured user ${err}`
+        })
+    }
+}
+
+exports.postInternship = async(req,res) => {
+    
+    try{
+        const {email , stipend , minCGPA , description} = req.body
+        const faculty = await Faculty.findOne({'email': email})
+        let facultyId
+        if(faculty){
+            facultyId = faculty._id
+        }
+        else{
+            return res.status(500).json({
+                success: false,
+                error: `incorrect email`
+            })
+        }
+        
+        const internship = new Internship({
+                             facultyId: facultyId,
+                             stipend:stipend,
+                             minCGPA:minCGPA,
+                             description: description   
+                            })
+        await internship.save()
+        return res.status(200).json({
+            success: true,
+            data: internship,
+        });
+    }
+    catch(err){
+        return res.status(500).json({
+            success: false,
+            error: `Error occured user ${err}`
+        })
+    }
+
+}
+
+
+exports.getAllAvaliableInternships = async(req,res) => {
+    
+    try{
+        const internships = await Internship.find({})
+        return res.status(200).json({
+            success: true,
+            data: internships,
+        });
+    }
     catch(err){
         return res.status(500).json({
             success: false,

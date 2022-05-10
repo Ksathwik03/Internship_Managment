@@ -6,6 +6,10 @@ const StudentSchema = new mongoose.Schema(
       type: String,
     },
     
+    name:{
+      type:String
+    },
+    
     email: {
       type: String,
       unique: true,

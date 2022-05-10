@@ -6,7 +6,7 @@ const passport = require('passport');
 const cookieSession = require('cookie-session')
 require('./config/passport')
 require('dotenv').config();
-app.use(cors({ origin: "http://localhost:3000", credentials: true }));
+app.use(cors({ origin: "http://localhost:3000",   methods:['GET','POST'], credentials: true }));
 const mongoose = require("mongoose");
 
 

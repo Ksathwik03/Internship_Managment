@@ -5,7 +5,7 @@ exports.registerStudent = async(req,res) => {
     
     try{
         const {resume,phoneNumber,CGPA} = req.body
-
+        console.log(req.data)
         await Student.findOneAndUpdate({'email' : req.user.email} , 
             {
                 resume: resume,
