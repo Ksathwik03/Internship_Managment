@@ -201,3 +201,23 @@ exports.getAllAvaliableInternships = async(req,res) => {
         })
     }
 }
+
+exports.getDetailedIntershipDetails = async(req,res) => {
+    
+    try{
+        const internshipId = req.params.internshipId
+        const internship = await Internship.findOne({'_id': internshipId})
+        const faculty = await Faculty.findOne({'_id': internship.facultyId})
+        return res.status(200).json({
+            success: true,
+            data: internship,
+            faculty: faculty
+        });
+    }
+    catch(err){
+        return res.status(500).json({
+            success: false,
+            error: `Error occured user ${err}`
+        })
+    }
+}
