@@ -11,7 +11,7 @@ router.get('/appliedInternships', isLoggedIn, appliedInterns)
 router.put('/approve/applicationId', isLoggedIn, approveIntern)
 router.get('/application/:applicationId', isLoggedIn, detailedApplication)
 router.get('/facultyInterships', isLoggedIn, facultyInterships)
-router.post('/internship',postInternship)
+router.post('/internship', postInternship)
 router.get('/internship', getAllAvaliableInternships)
 
 module.exports = router;
