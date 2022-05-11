@@ -21,6 +21,9 @@ const FacultySchema = new mongoose.Schema({
   website: {
     type: String
   },
+  name:{
+    type: String
+  },
 
   token: { type: String },
 

@@ -56,7 +56,8 @@ exports.appliedInterns = async (req, res) => {
 
 exports.appliedInternships = async (req, res) => {
     try {
-        let { studentId } = req.user.id;
+        let studentId  = req.user._id;
+        
         const applied = await Application.find({ studentId: studentId });
 
         return res.status(200).json({
