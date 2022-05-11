@@ -22,8 +22,11 @@ passport.use('google-stu', new GoogleStrategy({
     try {
 
       let myArray = profile._json.email.split("@")
+      if (myArray[1] != 'iiita.ac.in') {
+        return done("Only iiita Allowed", null)
+      }
       let enrollmentNumber = myArray[0]
-      let branch = myArray[0].substring(1,3)
+      let branch = myArray[0].substring(1, 3)
 
       let student = await Student.
         findOne({ 'email': profile._json.email })
@@ -59,7 +62,7 @@ passport.use('google-fac', new GoogleStrategy({
 
       let myArray = profile._json.email.split("@")
 
-      if(myArray[1] != 'iiita.ac.in'){
+      if (myArray[1] != 'iiita.ac.in') {
         return done("Only iiita Allowed", null)
       }
 

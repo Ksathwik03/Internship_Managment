@@ -1,10 +1,14 @@
 const mongoose = require('mongoose');
 const findOrCreate = require('mongoose-find-or-create');
 const Faculty = require('./faculty');
-Schema=mongoose.Schema;
+Schema = mongoose.Schema;
 
 const InternshipSchema = new mongoose.Schema({
     id: {
+        type: String,
+    },
+
+    name: {
         type: String,
     },
 

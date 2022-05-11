@@ -1,3 +1,4 @@
+const { findById } = require("../models/faculty")
 const Faculty = require("../models/faculty")
 const Student = require("../models/student")
 
@@ -38,13 +39,14 @@ exports.registerStudent = async (req, res) => {
 exports.registerFaculty = async (req, res) => {
 
     try {
-        const { areaOfInterest, qualifications, website } = req.body
+        const { areaOfInterest, qualifications, website, phoneNo } = req.body
 
         await Faculty.findOneAndUpdate({ 'email': req.user.email },
             {
                 areaOfInterest: areaOfInterest,
                 qualifications: qualifications,
-                website: website
+                website: website,
+                phoneNo: phoneNo
             }
         )
             .catch(err => {
@@ -71,9 +73,16 @@ exports.registerFaculty = async (req, res) => {
 exports.getProfile = async (req, res) => {
 
     try {
+        let userDetails;
+        if (req.user.isStudent) {
+            userDetails = await Student.findById(req.user._id);
+        }
+        else {
+            userDetails = await Faculty.findById(req.user._id);
+        }
         return res.status(200).json({
             success: true,
-            user: req.user
+            user: userDetails
         })
     }
     catch (err) {
@@ -82,5 +91,4 @@ exports.getProfile = async (req, res) => {
             error: `Error occured user ${err}`
         })
     }
-
 }

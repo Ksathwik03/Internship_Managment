@@ -6,14 +6,17 @@ const Student = require("../models/student");
 
 exports.ApplyForIntern = async (req, res) => {
     try {
-        let studentId = req.user.id;
-        let intershipId = req.params.internshipId;
+        let studentId = req.user._id;
+        let internshipId = req.params.internshipId;
+        console.log("InternshipId", internshipId);
         let { experience, whyHire } = req.body;
-        let facultyId = await Internship.findById(intershipId).facultyId;
+
+        let internshipOb = await Internship.findById(internshipId);
+        console.log(studentId);
 
         const newApplication = new Application({
-            facultyId: facultyId,
-            intershipId: intershipId,
+            facultyId: internshipOb.facultyId,
+            internshipId: internshipId,
             experience: experience,
             whyHire: whyHire,
             studentId: studentId,
@@ -37,7 +40,7 @@ exports.appliedInterns = async (req, res) => {
     try {
         let { applicationId } = req.params.applicationId;
 
-        const applied = await Application.find({ intershipId: applicationId });
+        const applied = await Application.find({ internshipId: applicationId });
 
         return res.status(200).json({
             success: true,
@@ -72,8 +75,28 @@ exports.approveIntern = async (req, res) => {
     try {
         const applicationId = req.params.applicationId;
         const application = await Application.findOneAndUpdate(
-            { id: applicationId },
-            { isApproved: true }
+            { _id: applicationId },
+            { status: "Approved" }
+        );
+
+        return res.status(200).json({
+            success: true,
+            data: application,
+        });
+    } catch (err) {
+        return res.status(500).json({
+            success: false,
+            error: `Error occured user ${err}`,
+        });
+    }
+};
+
+exports.rejectIntern = async (req, res) => {
+    try {
+        const applicationId = req.params.applicationId;
+        const application = await Application.findOneAndUpdate(
+            { _id: applicationId },
+            { status: "Rejected" }
         );
 
         return res.status(200).json({
@@ -91,9 +114,10 @@ exports.approveIntern = async (req, res) => {
 exports.detailedApplication = async (req, res) => {
     try {
         const applicationId = req.params.applicationId;
-        const application = await Application.findOne({ id: applicationId });
-        const student = Student.findOne({ id: application.studentId });
-
+        const application = await Application.findOne({ _id: applicationId });
+        const student = await Student.findById(application.studentId);
+        console.log("Appl", application);
+        console.log(student);
         return res.status(200).json({
             success: true,
             data: application,
@@ -126,7 +150,7 @@ exports.facultyInterships = async (req, res) => {
 
 exports.postInternship = async (req, res) => {
     try {
-        const { email, stipend, minCGPA, description } = req.body.values;
+        const { email, name, stipend, minCGPA, description } = req.body.values;
 
         const faculty = await Faculty.findOne({ email: email });
         let facultyId;
@@ -143,6 +167,7 @@ exports.postInternship = async (req, res) => {
             facultyId: facultyId,
             stipend: stipend,
             minCGPA: minCGPA,
+            name: name,
             description: description,
         });
         await internship.save();
@@ -176,8 +201,9 @@ exports.getAllAvaliableInternships = async (req, res) => {
 exports.getDetailedIntershipDetails = async (req, res) => {
     try {
         const internshipId = req.params.internshipId;
-        const internship = await Internship.findOne({ _id: internshipId });
-        const faculty = await Faculty.findOne({ _id: internship.facultyId });
+        console.log(internshipId);
+        const internship = await Internship.findById(internshipId);
+        const faculty = await Faculty.findById(internship.facultyId);
         return res.status(200).json({
             success: true,
             data: internship,

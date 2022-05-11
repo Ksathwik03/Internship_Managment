@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Faculty = require('./faculty');
 const Internship = require('./internship');
 const Student = require('./student');
-Schema=mongoose.Schema;
+Schema = mongoose.Schema;
 
 const ApplicationSchema = new mongoose.Schema({
 
@@ -10,7 +10,7 @@ const ApplicationSchema = new mongoose.Schema({
         type: String,
     },
 
-    intershipId: {
+    internshipId: {
         type: Schema.Types.ObjectId,
         ref: Internship
     },
@@ -33,9 +33,9 @@ const ApplicationSchema = new mongoose.Schema({
         type: String
     },
 
-    isApproved: {
-        type: Boolean,
-        default: false
+    status: {
+        type: String,
+        default: "Pending"
     }
 
 }, { timestamps: true });

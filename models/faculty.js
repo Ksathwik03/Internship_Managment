@@ -12,7 +12,9 @@ const FacultySchema = new mongoose.Schema({
   areaOfInterest: {
     type: String,
   },
-
+  phoneNo: {
+    type: String
+  },
   qualifications: {
     type: Array
   },
